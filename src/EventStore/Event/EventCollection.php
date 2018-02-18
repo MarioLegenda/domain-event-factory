@@ -2,7 +2,9 @@
 
 namespace EventStore\Event;
 
-class EventCollection implements \Countable, \IteratorAggregate
+use EventStore\Infrastructure\ArrayableInterface;
+
+class EventCollection implements ArrayableInterface, \Countable, \IteratorAggregate
 {
     /**
      * @var array $events
@@ -60,7 +62,7 @@ class EventCollection implements \Countable, \IteratorAggregate
     /**
      * @return array
      */
-    public function asArray(): array
+    public function toArray(): array
     {
         return $this->events;
     }

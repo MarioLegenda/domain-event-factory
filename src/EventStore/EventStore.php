@@ -115,7 +115,7 @@ class EventStore implements EventStoreInterface, \Countable, \IteratorAggregate
      */
     public function getIterator(): \ArrayIterator
     {
-        return new \ArrayIterator($this->getEvents()->asArray());
+        return new \ArrayIterator($this->getEvents()->toArray());
     }
     /**
      * @param object $object

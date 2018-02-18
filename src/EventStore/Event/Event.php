@@ -2,7 +2,9 @@
 
 namespace EventStore\Event;
 
-class Event implements EventInterface, \JsonSerializable
+use EventStore\Infrastructure\ArrayableInterface;
+
+class Event implements ArrayableInterface, EventInterface, \JsonSerializable
 {
     /**
      * @var string $objectHash
