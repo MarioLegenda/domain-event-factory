@@ -14,14 +14,13 @@
 
   "require": {
     "php": ">=7.0",
-    "phpunit/phpunit": "7.*",
-    "jan-swiecki/simple-annotations": "^0.3.1",
-    "symfony/var-dumper": "^4.0"
+    "jan-swiecki/simple-annotations": "^0.3.1"
   },
 
   "require-dev": {
     "raveren/kint": "^1.0",
-    "fzaninotto/faker": "^1.6"
+    "fzaninotto/faker": "^1.6",
+    "phpunit/phpunit": "^7.0"
   },
 
   "autoload": {

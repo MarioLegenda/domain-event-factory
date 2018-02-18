@@ -25,17 +25,6 @@ class EventCollection implements \Countable, \IteratorAggregate
     }
     /**
      * @param string $name
-     * @param Event $event
-     * @return EventCollection
-     */
-    public function addSingle(string $name, Event $event): EventCollection
-    {
-        $this->add($name, [$event]);
-
-        return $this;
-    }
-    /**
-     * @param string $name
      * @return bool
      */
     public function has(string $name): bool
