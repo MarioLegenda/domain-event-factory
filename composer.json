@@ -1,0 +1,33 @@
+{
+  "name": "mario-legenda/event-store",
+  "description": "Event store handler for PHP",
+  "type": "library",
+  "license": "MIT",
+  "keywords": ["event-store", "annotations"],
+  "authors": [
+    {
+      "name": "Mario Skrlec",
+      "email": "whitepostmail@gmail.com",
+      "role": "Developer"
+    }
+  ],
+
+  "require": {
+    "php": ">=7.0",
+    "phpunit/phpunit": "7.*",
+    "jan-swiecki/simple-annotations": "^0.3.1",
+    "symfony/var-dumper": "^4.0"
+  },
+
+  "require-dev": {
+    "raveren/kint": "^1.0",
+    "fzaninotto/faker": "^1.6"
+  },
+
+  "autoload": {
+    "psr-0": {
+      "EventStore": "src/",
+      "Test": "tests/"
+    }
+  }
+}
