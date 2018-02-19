@@ -1,6 +1,6 @@
 ### Introduction
 
-This tool makes handling events from domain object easy with annotations.
+This tool makes handling events from domain objects easy with annotations.
 
 ### Requirements
 
