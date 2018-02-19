@@ -6,7 +6,7 @@ This tool makes handling events from domain object easy with annotations.
 
 `PHP 7.1` (Created on 7.2)
 
-### Installing
+### Installing (not yet possible because it is not on packagist)
 
 `composer require "mario-legenda/event-store"`
 
