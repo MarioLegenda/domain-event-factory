@@ -38,7 +38,6 @@ use EventStore\EventStore;
 * annotation and the list of event(s)
 */
 
-
 class User 
 {
     /**
