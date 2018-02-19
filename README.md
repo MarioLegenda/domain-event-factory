@@ -27,6 +27,9 @@ the event name(s) that this payload is associated with
 ### Examples
 
 ```
+
+use EventStore\EventStore;
+
 /**
 * @EventStore user_created, user_updated
 *
@@ -35,7 +38,6 @@ the event name(s) that this payload is associated with
 * annotation and the list of event(s)
 */
 
-use EventStore\EventStore;
 
 class User 
 {
