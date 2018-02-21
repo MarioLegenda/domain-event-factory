@@ -135,7 +135,10 @@ class DomainEventFactory implements EventStoreInterface, \Countable, \IteratorAg
      */
     private function realCreateMetadata($object)
     {
-        $metadataFactory = new MetadataFactory($object);
+        $metadataFactory = new MetadataFactory(
+            $object,
+            'DomainEventFactory'
+        );
         $metadata = $metadataFactory->createAll();
 
         $this->metadata->merge($metadata);

@@ -5,7 +5,7 @@ namespace Test\Model;
 /**
  * Class User
  * @package Test\Model
- * @EventStore user_created, user_updated
+ * @DomainEventFactory user_created, user_updated
  */
 class User
 {

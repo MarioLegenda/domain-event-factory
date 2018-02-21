@@ -11,13 +11,22 @@ class MetadataFactory implements \IteratorAggregate
      */
     private $tempMetadata = [];
     /**
+     * @var string $factoryAnnotationName
+     */
+    private $factoryAnnotationName;
+    /**
      * MetadataFactory constructor.
-     * @param $object
+     * @param object $object
+     * @param string $factoryAnnotationName
      * @throws \Exception
      */
-    public function __construct($object)
-    {
-        $eventStoreNames = $this->extractEventStoreName($object);
+    public function __construct(
+        $object,
+        string $factoryAnnotationName
+    ) {
+        $this->factoryAnnotationName = $factoryAnnotationName;
+
+        $eventStoreNames = $this->extractFactoryName($object);
 
         foreach ($eventStoreNames as $eventStoreName) {
             $this->tempMetadata[$eventStoreName] = [
@@ -66,11 +75,11 @@ class MetadataFactory implements \IteratorAggregate
      * @return array
      * @throws \Exception
      */
-    private function extractEventStoreName($object): array
+    private function extractFactoryName($object): array
     {
         $reader = new Reader($object);
 
-        $eventStoreParameter = $reader->getParameter('EventStore');
+        $eventStoreParameter = $reader->getParameter($this->factoryAnnotationName);
 
         $this->validateEventStoreParameter($eventStoreParameter);
 
@@ -85,7 +94,11 @@ class MetadataFactory implements \IteratorAggregate
     private function validateEventStoreParameter($parameter)
     {
         if (!is_string($parameter)) {
-            $message = sprintf('Invalid annotations. There is no \'EventStore\' annotation.');
+            $message = sprintf(
+                'Invalid annotations. There is no \'%s\' annotation.',
+                $this->factoryAnnotationName
+            );
+
             throw new \RuntimeException($message);
         }
     }
