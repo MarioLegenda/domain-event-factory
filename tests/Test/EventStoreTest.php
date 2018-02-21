@@ -3,7 +3,7 @@
 namespace Test;
 
 use EventStore\Event\Event;
-use EventStore\EventStore;
+use EventStore\DomainEventFactory;
 use Faker\Factory;
 use PHPUnit\Framework\TestCase;
 use Test\Model\User;
@@ -28,12 +28,12 @@ class EventStoreTest extends TestCase
         $user2->setEmail($faker->email);
         $user2->setUsername($faker->userName);
 
-        $eventStore = new EventStore();
+        $eventStore = new DomainEventFactory();
 
         $this->assertObjectStorage($eventStore);
 
-        $eventStore->store($user1);
-        $eventStore->store($user2);
+        $eventStore->createMetadata($user1);
+        $eventStore->createMetadata($user2);
 
         static::assertTrue($eventStore->hasEvent('user_created'));
         static::assertTrue($eventStore->hasEvent('user_updated'));
@@ -75,12 +75,12 @@ class EventStoreTest extends TestCase
         $user2->setEmail($faker->email);
         $user2->setUsername($faker->userName);
 
-        $eventStore = new EventStore();
+        $eventStore = new DomainEventFactory();
 
         $this->assertObjectStorage($eventStore);
 
-        $eventStore->store($user1);
-        $eventStore->store($user2);
+        $eventStore->createMetadata($user1);
+        $eventStore->createMetadata($user2);
 
         $entered = 0;
         foreach ([$user1, $user2] as $user) {
@@ -144,11 +144,11 @@ class EventStoreTest extends TestCase
         $user2->setEmail($faker->email);
         $user2->setUsername($faker->userName);
 
-        $eventStore = new EventStore();
+        $eventStore = new DomainEventFactory();
 
         $eventStore
-            ->store($user1)
-            ->store($user2);
+            ->createMetadata($user1)
+            ->createMetadata($user2);
 
         $this->assertObjectStorage($eventStore);
 
@@ -159,14 +159,14 @@ class EventStoreTest extends TestCase
         }
     }
     /**
-     * @param EventStore $eventStore
+     * @param DomainEventFactory $eventStore
      * @throws \Exception
      */
-    private function assertObjectStorage(EventStore $eventStore)
+    private function assertObjectStorage(DomainEventFactory $eventStore)
     {
         $enteredException = false;
         try {
-            $eventStore->store(User::class);
+            $eventStore->createMetadata(User::class);
         } catch (\Exception $e) {
             $enteredException = true;
         }

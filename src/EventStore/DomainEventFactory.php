@@ -8,7 +8,7 @@ use EventStore\Event\Metadata;
 use EventStore\Event\MetadataCollection;
 use EventStore\Event\MetadataFactory;
 
-class EventStore implements EventStoreInterface, \Countable, \IteratorAggregate
+class DomainEventFactory implements EventStoreInterface, \Countable, \IteratorAggregate
 {
     /**
      * @var EventCollection $events
@@ -19,11 +19,11 @@ class EventStore implements EventStoreInterface, \Countable, \IteratorAggregate
      */
     private $metadata = [];
     /**
-     * @var EventStore $instance
+     * @var DomainEventFactory $instance
      */
     private static $instance;
     /**
-     * @return EventStore
+     * @return DomainEventFactory
      */
     public static function construct()
     {
@@ -40,11 +40,11 @@ class EventStore implements EventStoreInterface, \Countable, \IteratorAggregate
     /**
      * @inheritdoc
      */
-    public function store($object): EventStoreInterface
+    public function createMetadata($object): EventStoreInterface
     {
         $this->validateStoreType($object);
 
-        $this->createMetadata($object);
+        $this->realCreateMetadata($object);
 
         return $this;
     }
@@ -133,7 +133,7 @@ class EventStore implements EventStoreInterface, \Countable, \IteratorAggregate
      * @param object $object
      * @throws \Exception
      */
-    private function createMetadata($object)
+    private function realCreateMetadata($object)
     {
         $metadataFactory = new MetadataFactory($object);
         $metadata = $metadataFactory->createAll();
