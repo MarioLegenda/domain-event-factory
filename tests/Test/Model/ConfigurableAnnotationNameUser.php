@@ -6,37 +6,38 @@ namespace Test\Model;
  * Class User
  * @package Test\Model
  * @DomainEventFactory user_created, user_updated
+ * @EventPayloadName Payload
  */
-class User
+class ConfigurableAnnotationNameUser
 {
     /**
      * @var string $email
-     * @EventPayload user_created, user_updated
+     * @Payload user_created, user_updated
      */
     private $email;
     /**
      * @var string $username
-     * @EventPayload user_created, user_updated
+     * @Payload user_created, user_updated
      */
     private $username;
     /**
      * @var string $name
-     * @EventPayload user_created, user_updated
+     * @Payload user_created, user_updated
      */
     private $name;
     /**
      * @var string $lastname
-     * @EventPayload user_created, user_updated
+     * @Payload user_created, user_updated
      */
     private $lastname;
     /**
      * @var \DateTime $createdAt
-     * @EventPayload user_created, user_updated
+     * @Payload user_created, user_updated
      */
     private $createdAt;
     /**
      * @var \DateTime $updatedAt
-     * @EventPayload user_updated
+     * @Payload user_updated
      */
     private $updatedAt;
     /**

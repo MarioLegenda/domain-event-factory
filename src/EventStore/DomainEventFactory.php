@@ -137,7 +137,8 @@ class DomainEventFactory implements EventStoreInterface, \Countable, \IteratorAg
     {
         $metadataFactory = new MetadataFactory(
             $object,
-            'DomainEventFactory'
+            'DomainEventFactory',
+            'EventPayloadName'
         );
         $metadata = $metadataFactory->createAll();
 

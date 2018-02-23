@@ -10,7 +10,7 @@ interface EventStoreInterface
      * @param object $object
      * @return EventStoreInterface
      *
-     * Stores event metadata from which an Event object will be created. Event object is created
+     * Stores event metadata from which an Event object will be created. Event objects are created
      * in getEvents() or getEvent() methods
      */
     public function createMetadata($object): EventStoreInterface;

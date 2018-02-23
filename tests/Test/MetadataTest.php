@@ -21,7 +21,11 @@ class MetadataTest extends TestCase
         $user->setEmail($faker->email);
         $user->setUsername($faker->userName);
 
-        $metadataFactory = new MetadataFactory($user, 'DomainEventFactory');
+        $metadataFactory = new MetadataFactory(
+            $user,
+            'DomainEventFactory',
+            'EventPayloadName'
+        );
 
         $metadataObjects = $metadataFactory->createAll();
 

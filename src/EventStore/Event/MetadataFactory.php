@@ -15,23 +15,31 @@ class MetadataFactory implements \IteratorAggregate
      */
     private $factoryAnnotationName;
     /**
+     * @var string $eventPayloadName
+     */
+    private $eventPayloadName;
+    /**
      * MetadataFactory constructor.
      * @param object $object
      * @param string $factoryAnnotationName
+     * @param string $eventPayloadName
      * @throws \Exception
      */
     public function __construct(
         $object,
-        string $factoryAnnotationName
+        string $factoryAnnotationName,
+        string $eventPayloadName
     ) {
         $this->factoryAnnotationName = $factoryAnnotationName;
+        $this->eventPayloadName = $eventPayloadName;
 
-        $eventStoreNames = $this->extractFactoryName($object);
+        $classMetadata = $this->extractFactoryClassMetadata($object);
 
-        foreach ($eventStoreNames as $eventStoreName) {
+        foreach ($classMetadata['eventNames'] as $eventStoreName) {
             $this->tempMetadata[$eventStoreName] = [
                 'event' => $eventStoreName,
                 'object' => $object,
+                'payloadName' => $classMetadata['eventPayloadName'],
             ];
         }
     }
@@ -45,13 +53,14 @@ class MetadataFactory implements \IteratorAggregate
     /**
      * @param string $event
      * @param object $object
+     * @param string|null $eventPayloadName
      * @return Metadata
      * @throws \Exception
      * @throws \ReflectionException
      */
-    public function create(string $event, $object): Metadata
+    public function create(string $event, $object, string $eventPayloadName = null): Metadata
     {
-        return new Metadata($event, $object);
+        return new Metadata($event, $object, $eventPayloadName);
     }
     /**
      * @return array
@@ -64,7 +73,8 @@ class MetadataFactory implements \IteratorAggregate
         foreach ($this->tempMetadata as $key => $metadata) {
             $metadataObjects[] = $this->create(
                 $metadata['event'],
-                $metadata['object']
+                $metadata['object'],
+                $metadata['payloadName']
             );
         }
 
@@ -75,17 +85,23 @@ class MetadataFactory implements \IteratorAggregate
      * @return array
      * @throws \Exception
      */
-    private function extractFactoryName($object): array
+    private function extractFactoryClassMetadata($object): array
     {
         $reader = new Reader($object);
 
-        $eventStoreParameter = $reader->getParameter($this->factoryAnnotationName);
+        $eventNamesParameter = $reader->getParameter($this->factoryAnnotationName);
 
-        $this->validateEventStoreParameter($eventStoreParameter);
+        $this->validateEventStoreParameter($eventNamesParameter);
 
-        $eventNames = explode(',', $eventStoreParameter);
+        $unparsedEventNames = explode(',', $eventNamesParameter);
 
-        return $this->resolveEventNames($eventNames, $object);
+        $eventNames = $this->resolveEventClassMetadata($unparsedEventNames, $object);
+        $payloadName = $this->resolveEventPayloadName($reader);
+
+        return [
+            'eventNames' => $eventNames,
+            'eventPayloadName' => $payloadName,
+        ];
     }
     /**
      * @param array|null $parameter
@@ -108,7 +124,7 @@ class MetadataFactory implements \IteratorAggregate
      * @throws \RuntimeException
      * @return array
      */
-    private function resolveEventNames(array $eventNames, $object): array
+    private function resolveEventClassMetadata(array $eventNames, $object): array
     {
         $temp = [];
         foreach ($eventNames as $eventName) {
@@ -121,5 +137,13 @@ class MetadataFactory implements \IteratorAggregate
         }
 
         return $temp;
+    }
+    /**
+     * @param Reader $reader
+     * @return string|null
+     */
+    private function resolveEventPayloadName(Reader $reader): ?string
+    {
+        return $reader->getParameter($this->eventPayloadName);
     }
 }

@@ -19,18 +19,25 @@ class Metadata
      */
     private $metadata = [];
     /**
+     * @var string $payloadName
+     */
+    private $payloadName;
+    /**
      * Metadata constructor.
      * @param string $name
-     * @param $object
+     * @param object $object
+     * @param string|null $eventPayloadName
      * @throws \Exception
      * @throws \ReflectionException
      */
     public function __construct(
         string $name,
-        $object
+        $object,
+        string $eventPayloadName = null
     ) {
         $this->name = $name;
         $this->objectHash = spl_object_hash($object);
+        $this->payloadName = (is_string($eventPayloadName)) ? $eventPayloadName : 'EventPayload';
 
         $properties = (new \ReflectionClass($object))->getProperties();
 
@@ -105,24 +112,27 @@ class Metadata
         array $reflectionProperties,
         $object
     ) {
+        $metadata = [];
         /** @var \ReflectionProperty $property */
         foreach ($reflectionProperties as $property) {
             $property->setAccessible(true);
             $reader = new Reader($object, $property->getName(), 'property');
 
-            if ($reader->getParameter('EventPayload') !== null) {
-                $event = $this->resolveEvent($reader->getParameter('EventPayload'));
+            if ($reader->getParameter($this->payloadName) !== null) {
+                $event = $this->resolveEvent($reader->getParameter($this->payloadName));
 
                 if ($event === null) {
                     continue;
                 }
 
-                $this->metadata[$property->getName()] = [
+                $metadata[$property->getName()] = [
                     'value' => $property->getValue($object),
                     'event' => $event,
                 ];
             }
         }
+
+        $this->metadata = $metadata;
     }
     /**
      * @param string $events

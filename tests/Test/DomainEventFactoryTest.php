@@ -6,27 +6,15 @@ use EventStore\Event\Event;
 use EventStore\DomainEventFactory;
 use Faker\Factory;
 use PHPUnit\Framework\TestCase;
+use Test\Model\ConfigurableAnnotationNameUser;
 use Test\Model\User;
 
-class EventStoreTest extends TestCase
+class DomainEventFactoryTest extends TestCase
 {
     public function test_event_store_getEvents()
     {
-        $faker = Factory::create();
-
-        $user1 = new User();
-
-        $user1->setName($faker->name);
-        $user1->setLastname($faker->lastName);
-        $user1->setEmail($faker->email);
-        $user1->setUsername($faker->userName);
-
-        $user2 = new User();
-
-        $user2->setName($faker->name);
-        $user2->setLastname($faker->lastName);
-        $user2->setEmail($faker->email);
-        $user2->setUsername($faker->userName);
+        $user1 = $this->createUser();
+        $user2 = $this->createUser();
 
         $eventStore = new DomainEventFactory();
 
@@ -59,21 +47,8 @@ class EventStoreTest extends TestCase
 
     public function test_event_store_getEvent()
     {
-        $faker = Factory::create();
-
-        $user1 = new User();
-
-        $user1->setName($faker->name);
-        $user1->setLastname($faker->lastName);
-        $user1->setEmail($faker->email);
-        $user1->setUsername($faker->userName);
-
-        $user2 = new User();
-
-        $user2->setName($faker->name);
-        $user2->setLastname($faker->lastName);
-        $user2->setEmail($faker->email);
-        $user2->setUsername($faker->userName);
+        $user1 = $this->createUser();
+        $user2 = $this->createUser();
 
         $eventStore = new DomainEventFactory();
 
@@ -128,21 +103,8 @@ class EventStoreTest extends TestCase
 
     public function test_event_store_iteration()
     {
-        $faker = Factory::create();
-
-        $user1 = new User();
-
-        $user1->setName($faker->name);
-        $user1->setLastname($faker->lastName);
-        $user1->setEmail($faker->email);
-        $user1->setUsername($faker->userName);
-
-        $user2 = new User();
-
-        $user2->setName($faker->name);
-        $user2->setLastname($faker->lastName);
-        $user2->setEmail($faker->email);
-        $user2->setUsername($faker->userName);
+        $user1 = $this->createUser();
+        $user2 = $this->createUser();
 
         $eventStore = new DomainEventFactory();
 
@@ -158,6 +120,42 @@ class EventStoreTest extends TestCase
             static::assertContainsOnlyInstancesOf(Event::class, $events);
         }
     }
+
+	public function test_event_factory_configurable_payload_annotation_name()
+	{
+        $faker = Factory::create();
+
+        $user1 = $this->createConfigurableAnnotationNameUser();
+        $user2 = $this->createConfigurableAnnotationNameUser();
+
+        $eventStore = new DomainEventFactory();
+
+        $this->assertObjectStorage($eventStore);
+
+        $eventStore->createMetadata($user1);
+        $eventStore->createMetadata($user2);
+
+        static::assertTrue($eventStore->hasEvent('user_created'));
+        static::assertTrue($eventStore->hasEvent('user_updated'));
+        static::assertFalse($eventStore->hasEvent('invalid_event'));
+
+        $events = $eventStore->getEvents();
+
+        static::assertEquals(2, count($events));
+
+        $eventNames = ['user_created', 'user_updated'];
+
+        foreach ($eventNames as $eventName) {
+            static::assertTrue($events->has($eventName));
+
+            $extractedEvents = $events->get($eventName);
+
+            static::assertInternalType('array', $extractedEvents);
+            static::assertNotEmpty($extractedEvents);
+            static::assertEquals(2, count($extractedEvents));
+            static::assertContainsOnlyInstancesOf(Event::class, $extractedEvents);
+        }
+	}
     /**
      * @param DomainEventFactory $eventStore
      * @throws \Exception
@@ -172,5 +170,37 @@ class EventStoreTest extends TestCase
         }
 
         static::assertTrue($enteredException);
+    }
+    /**
+     * @return User
+     */
+    private function createUser(): User
+    {
+        $faker = Factory::create();
+
+        $user = new User();
+
+        $user->setName($faker->name);
+        $user->setLastname($faker->lastName);
+        $user->setEmail($faker->email);
+        $user->setUsername($faker->userName);
+
+        return $user;
+    }
+    /**
+     * @return ConfigurableAnnotationNameUser
+     */
+    private function createConfigurableAnnotationNameUser(): ConfigurableAnnotationNameUser
+    {
+        $faker = Factory::create();
+
+        $user = new ConfigurableAnnotationNameUser();
+
+        $user->setName($faker->name);
+        $user->setLastname($faker->lastName);
+        $user->setEmail($faker->email);
+        $user->setUsername($faker->userName);
+
+        return $user;
     }
 }
