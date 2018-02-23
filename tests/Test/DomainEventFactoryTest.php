@@ -2,8 +2,8 @@
 
 namespace Test;
 
-use EventStore\Event\Event;
-use EventStore\DomainEventFactory;
+use DomainEventFactory\Event\Event;
+use DomainEventFactory\DomainEventFactory;
 use Faker\Factory;
 use PHPUnit\Framework\TestCase;
 use Test\Model\ConfigurableAnnotationNameUser;
@@ -123,8 +123,6 @@ class DomainEventFactoryTest extends TestCase
 
 	public function test_event_factory_configurable_payload_annotation_name()
 	{
-        $faker = Factory::create();
-
         $user1 = $this->createConfigurableAnnotationNameUser();
         $user2 = $this->createConfigurableAnnotationNameUser();
 

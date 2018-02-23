@@ -1,12 +1,12 @@
 <?php
 
-namespace EventStore;
+namespace DomainEventFactory;
 
-use EventStore\Event\Event;
-use EventStore\Event\EventCollection;
-use EventStore\Event\Metadata;
-use EventStore\Event\MetadataCollection;
-use EventStore\Event\MetadataFactory;
+use DomainEventFactory\Event\Event;
+use DomainEventFactory\Event\EventCollection;
+use DomainEventFactory\Event\Metadata;
+use DomainEventFactory\Event\MetadataCollection;
+use DomainEventFactory\Event\MetadataFactory;
 
 class DomainEventFactory implements EventStoreInterface, \Countable, \IteratorAggregate
 {

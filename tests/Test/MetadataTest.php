@@ -2,8 +2,8 @@
 
 namespace Test;
 
-use EventStore\Event\Metadata;
-use EventStore\Event\MetadataFactory;
+use DomainEventFactory\Event\Metadata;
+use DomainEventFactory\Event\MetadataFactory;
 use PHPUnit\Framework\TestCase;
 use Faker\Factory;
 use Test\Model\User;

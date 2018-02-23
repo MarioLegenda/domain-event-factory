@@ -1,6 +1,6 @@
 <?php
 
-namespace EventStore\Infrastructure;
+namespace DomainEventFactory\Infrastructure;
 
 interface ArrayableInterface
 {

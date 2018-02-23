@@ -1,8 +1,8 @@
 <?php
 
-namespace EventStore\Event;
+namespace DomainEventFactory\Event;
 
-use EventStore\Infrastructure\ArrayableInterface;
+use DomainEventFactory\Infrastructure\ArrayableInterface;
 
 class Event implements ArrayableInterface, EventInterface, \JsonSerializable
 {

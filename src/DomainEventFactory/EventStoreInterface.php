@@ -1,8 +1,8 @@
 <?php
 
-namespace EventStore;
+namespace DomainEventFactory;
 
-use EventStore\Event\EventCollection;
+use DomainEventFactory\Event\EventCollection;
 
 interface EventStoreInterface
 {

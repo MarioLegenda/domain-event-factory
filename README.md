@@ -14,7 +14,7 @@ This tool makes handling events from domain objects easy with annotations.
 
 There are two type of important annotations:
 
-1. `EventStore`
+1. `DomainEventFactory`
 
 The annotation goes right above the class name and contains 
 names of events that you want to collect
@@ -28,13 +28,13 @@ the event name(s) that this payload is associated with
 
 ```
 
-use EventStore\EventStore;
+use DomainEventFactory\DomainEventFactory;
 
 /**
-* @EventStore user_created, user_updated
+* @DomainEventFactory user_created, user_updated
 *
 * IMPORTANT: 
-* There has to be a single space between the @EventStore 
+* There has to be a single space between the @DomainEventFactory 
 * annotation and the list of event(s)
 */
 
@@ -67,9 +67,9 @@ class User
     }
 }
 
-$eventStore = new EventStore();
+$eventStore = new DomainEventFactory();
 
-// You can also use a singleton instance EventStore::construct()
+// You can also use a singleton instance DomainEventFactory::construct()
 
 $user1 = new User('Name', 'Lastname');
 $user2 = new User('Name', 'Lastname');
@@ -87,7 +87,7 @@ $events = $eventStore->getEvents();
 
 ```
 
-`$events` variable is an instance of `EventStore\Event\EventCollection` object
+`$events` variable is an instance of `DomainEventFactory\Event\EventCollection` object
 which is a collection (array) of `Event` objects sorted by event name.
 
 For example, the example above stored two user object. Therefor,
@@ -117,8 +117,8 @@ it will contain a key user_created with two Event objects in it.
 ```
 
 If you wish to see more methods that this tool supports, take a look
-at `EventStore\Event\EventCollection`, `EventStore\Event\Event` and 
-`EventStore\EventStore` objects. All methods that you can use are public
+at `DomainEventFactory\Event\EventCollection`, `DomainEventFactory\Event\Event` and 
+`DomainEventFactory\DomainEventFactory` objects. All methods that you can use are public
 and self explanatory.
 
 
