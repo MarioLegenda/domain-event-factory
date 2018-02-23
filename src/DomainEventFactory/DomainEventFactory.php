@@ -4,11 +4,12 @@ namespace DomainEventFactory;
 
 use DomainEventFactory\Event\Event;
 use DomainEventFactory\Event\EventCollection;
+use DomainEventFactory\Event\EventObjectInterface;
 use DomainEventFactory\Event\Metadata;
 use DomainEventFactory\Event\MetadataCollection;
 use DomainEventFactory\Event\MetadataFactory;
 
-class DomainEventFactory implements EventStoreInterface, \Countable, \IteratorAggregate
+class DomainEventFactory implements EventFactoryInterface, \Countable, \IteratorAggregate
 {
     /**
      * @var EventCollection $events
@@ -40,7 +41,7 @@ class DomainEventFactory implements EventStoreInterface, \Countable, \IteratorAg
     /**
      * @inheritdoc
      */
-    public function createMetadata($object): EventStoreInterface
+    public function createMetadata(EventObjectInterface $object): EventFactoryInterface
     {
         $this->validateStoreType($object);
 

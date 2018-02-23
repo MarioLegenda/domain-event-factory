@@ -18,8 +18,6 @@ class DomainEventFactoryTest extends TestCase
 
         $eventStore = new DomainEventFactory();
 
-        $this->assertObjectStorage($eventStore);
-
         $eventStore->createMetadata($user1);
         $eventStore->createMetadata($user2);
 
@@ -51,8 +49,6 @@ class DomainEventFactoryTest extends TestCase
         $user2 = $this->createUser();
 
         $eventStore = new DomainEventFactory();
-
-        $this->assertObjectStorage($eventStore);
 
         $eventStore->createMetadata($user1);
         $eventStore->createMetadata($user2);
@@ -112,8 +108,6 @@ class DomainEventFactoryTest extends TestCase
             ->createMetadata($user1)
             ->createMetadata($user2);
 
-        $this->assertObjectStorage($eventStore);
-
         foreach ($eventStore as $events) {
             static::assertInternalType('array', $events);
             static::assertNotEmpty($events);
@@ -127,8 +121,6 @@ class DomainEventFactoryTest extends TestCase
         $user2 = $this->createConfigurableAnnotationNameUser();
 
         $eventStore = new DomainEventFactory();
-
-        $this->assertObjectStorage($eventStore);
 
         $eventStore->createMetadata($user1);
         $eventStore->createMetadata($user2);
@@ -154,21 +146,6 @@ class DomainEventFactoryTest extends TestCase
             static::assertContainsOnlyInstancesOf(Event::class, $extractedEvents);
         }
 	}
-    /**
-     * @param DomainEventFactory $eventStore
-     * @throws \Exception
-     */
-    private function assertObjectStorage(DomainEventFactory $eventStore)
-    {
-        $enteredException = false;
-        try {
-            $eventStore->createMetadata(User::class);
-        } catch (\Exception $e) {
-            $enteredException = true;
-        }
-
-        static::assertTrue($enteredException);
-    }
     /**
      * @return User
      */

@@ -2,13 +2,15 @@
 
 namespace Test\Model;
 
+use DomainEventFactory\Event\EventObjectInterface;
+
 /**
  * Class User
  * @package Test\Model
  * @DomainEventFactory user_created, user_updated
  * @EventPayloadName Payload
  */
-class ConfigurableAnnotationNameUser
+class ConfigurableAnnotationNameUser implements EventObjectInterface
 {
     /**
      * @var string $email

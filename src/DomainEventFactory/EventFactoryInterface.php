@@ -3,17 +3,18 @@
 namespace DomainEventFactory;
 
 use DomainEventFactory\Event\EventCollection;
+use DomainEventFactory\Event\EventObjectInterface;
 
-interface EventStoreInterface
+interface EventFactoryInterface
 {
     /**
-     * @param object $object
-     * @return EventStoreInterface
+     * @param EventObjectInterface $object
+     * @return EventFactoryInterface
      *
      * Stores event metadata from which an Event object will be created. Event objects are created
      * in getEvents() or getEvent() methods
      */
-    public function createMetadata($object): EventStoreInterface;
+    public function createMetadata(EventObjectInterface $object): EventFactoryInterface;
     /**
      * @return EventCollection
      */
