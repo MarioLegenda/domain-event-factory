@@ -47,6 +47,20 @@ class MetadataCollection implements \IteratorAggregate, \Countable
     }
     /**
      * @param string $metadataName
+     * @return MetadataCollection
+     */
+    public function remove(string $metadataName): MetadataCollection
+    {
+        if (!$this->has($metadataName)) {
+            return $this;
+        }
+
+        unset($this->metadata[$metadataName]);
+
+        return $this;
+    }
+    /**
+     * @param string $metadataName
      * @return bool
      */
     public function has(string $metadataName): bool

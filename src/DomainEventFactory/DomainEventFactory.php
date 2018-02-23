@@ -81,6 +81,8 @@ class DomainEventFactory implements EventFactoryInterface, \Countable, \Iterator
 
             $events = Event::createFromMetadata($this->metadata->get($eventName));
 
+            $this->metadata->remove($eventName);
+            
             $this->events->add($eventName, $events);
 
             return $this->events->get($eventName);
