@@ -7,7 +7,11 @@ use DomainEventFactory\Infrastructure\ArrayableInterface;
 class Event implements ArrayableInterface, EventInterface, \JsonSerializable
 {
     /**
-     * @var string $objectHash
+     * @var EventObjectInterface $object
+     */
+    private $object;
+    /**
+     * @var string $objectHash;
      */
     private $objectHash;
     /**
@@ -21,16 +25,17 @@ class Event implements ArrayableInterface, EventInterface, \JsonSerializable
     /**
      * Event constructor.
      * @param string $name
-     * @param string $objectHash
+     * @param EventObjectInterface $object
      * @param array $payload
      */
     public function __construct(
         string $name,
-        string $objectHash,
+        EventObjectInterface $object,
         array $payload
     ) {
         $this->name = $name;
-        $this->objectHash = $objectHash;
+        $this->object = $object;
+        $this->objectHash = spl_object_hash($object);
         $this->payload = $payload;
     }
     /**
@@ -39,6 +44,13 @@ class Event implements ArrayableInterface, EventInterface, \JsonSerializable
     public function getName(): string
     {
         return $this->name;
+    }
+    /**
+     * @inheritdoc
+     */
+    public function getObject(): EventObjectInterface
+    {
+        return $this->object;
     }
     /**
      * @inheritdoc
@@ -79,7 +91,7 @@ class Event implements ArrayableInterface, EventInterface, \JsonSerializable
         foreach ($metadataObjects as $metadata) {
             $temp[] = new Event(
                 $metadata->getName(),
-                $metadata->getObjectHash(),
+                $metadata->getObject(),
                 $metadata->getMetadata()
             );
         }

@@ -20,13 +20,13 @@ class MetadataFactory implements \IteratorAggregate
     private $eventPayloadName;
     /**
      * MetadataFactory constructor.
-     * @param object $object
+     * @param EventObjectInterface $object
      * @param string $factoryAnnotationName
      * @param string $eventPayloadName
      * @throws \Exception
      */
     public function __construct(
-        $object,
+        EventObjectInterface $object,
         string $factoryAnnotationName,
         string $eventPayloadName
     ) {
@@ -52,13 +52,13 @@ class MetadataFactory implements \IteratorAggregate
     }
     /**
      * @param string $event
-     * @param object $object
+     * @param EventObjectInterface $object
      * @param string|null $eventPayloadName
      * @return Metadata
      * @throws \Exception
      * @throws \ReflectionException
      */
-    public function create(string $event, $object, string $eventPayloadName = null): Metadata
+    public function create(string $event, EventObjectInterface $object, string $eventPayloadName = null): Metadata
     {
         return new Metadata($event, $object, $eventPayloadName);
     }
@@ -81,11 +81,11 @@ class MetadataFactory implements \IteratorAggregate
         return $metadataObjects;
     }
     /**
-     * @param $object
+     * @param EventObjectInterface $object
      * @return array
      * @throws \Exception
      */
-    private function extractFactoryClassMetadata($object): array
+    private function extractFactoryClassMetadata(EventObjectInterface $object): array
     {
         $reader = new Reader($object);
 
@@ -120,11 +120,11 @@ class MetadataFactory implements \IteratorAggregate
     }
     /**
      * @param array $eventNames
-     * @param $object
+     * @param EventObjectInterface $object
      * @throws \RuntimeException
      * @return array
      */
-    private function resolveEventClassMetadata(array $eventNames, $object): array
+    private function resolveEventClassMetadata(array $eventNames, EventObjectInterface $object): array
     {
         $temp = [];
         foreach ($eventNames as $eventName) {

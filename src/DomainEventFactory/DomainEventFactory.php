@@ -119,9 +119,9 @@ class DomainEventFactory implements EventFactoryInterface, \Countable, \Iterator
         return new \ArrayIterator($this->getEvents()->toArray());
     }
     /**
-     * @param object $object
+     * @param EventObjectInterface $object
      */
-    private function validateStoreType($object)
+    private function validateStoreType(EventObjectInterface $object)
     {
         if (!is_object($object)) {
             $type = (string) gettype($object);

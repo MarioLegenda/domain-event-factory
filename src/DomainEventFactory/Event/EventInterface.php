@@ -17,6 +17,10 @@ interface EventInterface
      */
     public function toArray(): array;
     /**
+     * @return EventObjectInterface
+     */
+    public function getObject(): EventObjectInterface;
+    /**
      * @return string
      */
     public function getObjectHash(): string;

@@ -7,13 +7,13 @@ use DocBlockReader\Reader;
 class Metadata
 {
     /**
-     * @var string $objectHash
-     */
-    private $objectHash;
-    /**
      * @var string $name
      */
     private $name;
+    /**
+     * @var EventObjectInterface $object
+     */
+    private $object;
     /**
      * @var array $metadata
      */
@@ -25,18 +25,18 @@ class Metadata
     /**
      * Metadata constructor.
      * @param string $name
-     * @param object $object
+     * @param EventObjectInterface $object
      * @param string|null $eventPayloadName
      * @throws \Exception
      * @throws \ReflectionException
      */
     public function __construct(
         string $name,
-        $object,
+        EventObjectInterface $object,
         string $eventPayloadName = null
     ) {
         $this->name = $name;
-        $this->objectHash = spl_object_hash($object);
+        $this->object = $object;
         $this->payloadName = (is_string($eventPayloadName)) ? $eventPayloadName : 'EventPayload';
 
         $properties = (new \ReflectionClass($object))->getProperties();
@@ -51,11 +51,11 @@ class Metadata
         return $this->name;
     }
     /**
-     * @return string
+     * @return EventObjectInterface
      */
-    public function getObjectHash(): string
+    public function getObject(): EventObjectInterface
     {
-        return $this->objectHash;
+        return $this->object;
     }
     /**
      * @return array
