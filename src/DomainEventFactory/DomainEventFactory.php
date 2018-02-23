@@ -32,7 +32,9 @@ class DomainEventFactory implements EventFactoryInterface, \Countable, \Iterator
         
         return static::$instance;
     }
-
+    /**
+     * DomainEventFactory constructor.
+     */
     public function __construct()
     {
         $this->events = new EventCollection();
@@ -82,7 +84,7 @@ class DomainEventFactory implements EventFactoryInterface, \Countable, \Iterator
             $events = Event::createFromMetadata($this->metadata->get($eventName));
 
             $this->metadata->remove($eventName);
-            
+
             $this->events->add($eventName, $events);
 
             return $this->events->get($eventName);
@@ -93,6 +95,7 @@ class DomainEventFactory implements EventFactoryInterface, \Countable, \Iterator
         }
 
         $message = sprintf('Invalid event. Event \'%s\' does not exist', $eventName);
+
         throw new \RuntimeException($message);
     }
     /**
@@ -133,10 +136,10 @@ class DomainEventFactory implements EventFactoryInterface, \Countable, \Iterator
         }
     }
     /**
-     * @param object $object
+     * @param EventObjectInterface $object
      * @throws \Exception
      */
-    private function realCreateMetadata($object)
+    private function realCreateMetadata(EventObjectInterface $object)
     {
         $metadataFactory = new MetadataFactory(
             $object,

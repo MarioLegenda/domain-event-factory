@@ -105,12 +105,12 @@ class Metadata
     }
     /**
      * @param array $reflectionProperties
-     * @param $object
+     * @param EventObjectInterface $object
      * @throws \Exception
      */
     private function resolveMetadata(
         array $reflectionProperties,
-        $object
+        EventObjectInterface $object
     ) {
         $metadata = [];
         /** @var \ReflectionProperty $property */
